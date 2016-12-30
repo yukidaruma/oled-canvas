@@ -1,4 +1,4 @@
-[oled-js](https://github.com/noopkat/oled-js) (and compatible libraries) with [node-canvas](https://github.com/Automattic/node-canvas).
+[oled-js](https://github.com/noopkat/oled-js) (and compatible libraries) with [node-canvas](https://github.com/Automattic/node-canvas)
 
 # Installation
 1. [Install node-canvas' dependencies](https://github.com/Automattic/node-canvas#installation)
@@ -64,5 +64,5 @@ ctx.getImageData(0, 0, oled.WIDTH, oled.HEIGHT);
 - Powerful built-in functions
 - Future color support
 
-# LICENSE
+# License
 MIT
