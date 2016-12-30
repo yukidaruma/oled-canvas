@@ -4,6 +4,7 @@
   "dependencies": {
     "canvas": "^1.6.0"
   },
+  "description": "oled-js (and compatible libraries) with node-canvas",
   "main": "oled-canvas.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
