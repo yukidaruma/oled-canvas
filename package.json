@@ -1,0 +1,26 @@
+{
+  "name": "oled-canvas",
+  "version": "1.0.0",
+  "dependencies": {
+    "canvas": "^1.6.0"
+  },
+  "main": "oled-canvas.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yukidaruma/oled-canvas.git"
+  },
+  "keywords": [
+    "arduino",
+    "oled",
+    "pi",
+    "ssd1306"
+  ],
+  "author": "yukidaruman (https://github.com/yukidaruma)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yukidaruma/oled-canvas/issues"
+  }
+}
