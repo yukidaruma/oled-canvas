@@ -1,5 +1,11 @@
 [oled-js](https://github.com/noopkat/oled-js) (and compatible libraries) with [node-canvas](https://github.com/Automattic/node-canvas)
 
+# Why Canvas?
+- Non-monospace and CJK font support
+- Powerful built-in functions
+- Future color support
+- Prototyping/development without actually using OLED display.
+
 # Installation
 1. [Install node-canvas' dependencies](https://github.com/Automattic/node-canvas#installation)
 2. Install dependencies then npm install
@@ -60,12 +66,6 @@ oled.drawString('こんにちは、世界', { fontSize });
 const ctx = oled.getContext();
 ctx.getImageData(0, 0, oled.WIDTH, oled.HEIGHT);
 ```
-
-# Why Canvas?
-- Non-monospace and CJK font support
-- Powerful built-in functions
-- Future color support
-- Prototyping/development without actually using OLED display.
 
 # License
 MIT
