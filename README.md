@@ -54,7 +54,7 @@ oled.clearDisplay(false);
 oled.fillRect(0, 0, 10, 20, '#000', false);
 
 const fontSize = 12;
-oled.writeString('こんにちは、世界', fontSize);
+oled.drawString('こんにちは、世界', fontSize);
 
 // You can access canvas context if necessary.
 const ctx = oled.getContext();
