@@ -50,11 +50,11 @@ const oled = new OledCanvas(i2cBus, {
 ```javascript
 // Set update=false so oled-canvas update only once on drawString.
 // (update is very costly function)
-oled.clearDisplay(false);
-oled.fillRect(0, 0, 10, 20, '#000', false);
+oled.clearDisplay({ update: false });
+oled.fillRect(30, 40, 20, 20, { color: '#000', update: false });
 
 const fontSize = 12;
-oled.drawString('こんにちは、世界', fontSize);
+oled.drawString('こんにちは、世界', { fontSize });
 
 // You can access canvas context if necessary.
 const ctx = oled.getContext();

@@ -36,15 +36,15 @@ module.exports = (Oled) => {
     }
 
     clearCanvas() {
-      this.fillRect(0, 0, this.WIDTH, this.HEIGHT, '#fff', false);
+      this.fillRect(0, 0, this.WIDTH, this.HEIGHT, { color: '#fff', update: false });
     }
 
-    clearDisplay(update = true) {
+    clearDisplay({ update = true } = {}) {
       this.clearCanvas();
       if (update) this.update();
     }
 
-    drawLine(x0, y0, x1, y1, color = '#000', update = true) {
+    drawLine(x0, y0, x1, y1, { color = '#000', update = true } = {}) {
       const ctx = this._ctx;
       ctx.strokeStyle = color;
       ctx.beginPath();
@@ -55,20 +55,20 @@ module.exports = (Oled) => {
       if (update) this.update();
     }
 
-    drawPixel(pixels, update) {
+    drawPixel(pixels, { update = true } = {}) {
       const ctx = this._ctx;
 
       if (!Array.isArray(pixels[0])) pixels = [pixels];
 
       pixels.forEach((elem) => {
         const [x, y, pixel] = elem;
-        this.fillRect(x, y, 1, 1, pixel ? '#000' : 'fff', false);
+        this.fillRect(x, y, 1, 1, { color: pixel ? '#000' : 'fff', update: false });
       });
 
       if (update) this.update();
     }
 
-    fillRect(x, y, w, h, color = '#000', update = true) {
+    fillRect(x, y, w, h, { color = '#000', update = true } = {}) {
       const ctx = this._ctx;
       ctx.fillStyle = color;
       ctx.fillRect(x, y, w, h);
@@ -80,7 +80,7 @@ module.exports = (Oled) => {
       return this._ctx;
     }
 
-    drawString(string, fontSize, color = '#000', update = true) {
+    drawString(string, { fontSize, color = '#000', update = true } = {}) {
       if (!Number.isFinite(fontSize) || fontSize < 0) {
         throw new Error('fontSize must be positive number.');
       }
@@ -91,7 +91,7 @@ module.exports = (Oled) => {
 
       const width = ctx.measureText(string).width;
 
-      this.fillRect(this.cursor_x, this.cursor_y, width, fontSize, '#fff', update);
+      this.fillRect(this.cursor_x, this.cursor_y, width, { fontSize, color: '#fff', update });
 
       ctx.fillStyle = color;
       ctx.fillText(string, this.cursor_x, this.cursor_y + fontSize);
