@@ -79,7 +79,7 @@ module.exports = (Oled) => {
       return this._ctx;
     }
 
-    writeString(string, size, color = '#000', update = true) {
+    drawString(string, size, color = '#000', update = true) {
       const ctx = this._ctx;
       ctx.font = `${size}px "${this.fontFamily}"`;
       ctx.textBaseline = 'bottom';
