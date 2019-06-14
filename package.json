@@ -2,7 +2,7 @@
   "name": "oled-canvas",
   "version": "1.0.0",
   "dependencies": {
-    "canvas": "^1.6.0"
+    "canvas": "^2.6.0"
   },
   "description": "oled-js (and compatible libraries) with node-canvas",
   "main": "oled-canvas.js",

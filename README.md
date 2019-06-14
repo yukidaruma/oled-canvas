@@ -40,21 +40,23 @@ const oled = new OledCanvas(i2cBus, {
   width: 128,
   height: 64,
   address: 0x3C,
-  // default font is system monospace
-  // alternatively, you can use any font
+  // By default, oled-canvas tries to use system monospace font.
+  // Alternatively, you can specify any font.
   // fontFile: './path/to/OpenSans.ttf',
 });
 ```
 
 ## Usage
 ```javascript
-oled.clearDisplay();
-oled.fillRect(0, 0, 10, 20);
+// Set update=false so oled-canvas update only once on drawString.
+// (update is very costly function)
+oled.clearDisplay({ update: false });
+oled.fillRect(30, 40, 20, 20, { color: '#000', update: false });
 
 const fontSize = 12;
-oled.writeString('こんにちは、世界', fontSize);
+oled.drawString('こんにちは、世界', { fontSize });
 
-// you can access canvas context if necessary
+// You can access canvas context if necessary.
 const ctx = oled.getContext();
 ctx.getImageData(0, 0, oled.WIDTH, oled.HEIGHT);
 ```
