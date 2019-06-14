@@ -55,7 +55,7 @@ module.exports = (Oled) => {
       if (update) this.update();
     }
 
-    drawPixel(pixels, { update = true } = {}) {
+    drawPixels(pixels, { update = true } = {}) {
       const ctx = this._ctx;
 
       if (!Array.isArray(pixels[0])) pixels = [pixels];
