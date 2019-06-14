@@ -1,4 +1,4 @@
-const Canvas = require('canvas');
+const { createCanvas, registerFont } = require('canvas');
 
 module.exports = (Oled) => {
   return class OledCanvas extends Oled {
@@ -12,12 +12,12 @@ module.exports = (Oled) => {
         const fontFamily = opts.fontFile.replace(/^(.*\/)?\.[a-zA-Z]+$/, '');
 
         this.fontFamily = fontFamily;
-        Canvas.registerFont(opts.fontFile, { family: fontFamily });
+        registerFont(opts.fontFile, { family: fontFamily });
       } else {
         this.font = 'monospace';
       }
 
-      const canvas = new Canvas(this.WIDTH, this.HEIGHT);
+      const canvas = createCanvas(this.WIDTH, this.HEIGHT);
       this._ctx = canvas.getContext('2d');
       this.clearCanvas();
     }
