@@ -60,7 +60,7 @@ module.exports = (Oled) => {
 
       pixels.forEach((elem) => {
         const [x, y, pixel] = elem;
-        this.fillRect(x, y, 1, 1, { color: pixel ? '#000' : 'fff', update: false });
+        this.fillRect(x, y, 1, 1, { color: pixel ? '#000' : '#fff', update: false });
       });
 
       if (update) this.update();
