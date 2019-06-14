@@ -79,17 +79,21 @@ module.exports = (Oled) => {
       return this._ctx;
     }
 
-    drawString(string, size, color = '#000', update = true) {
+    drawString(string, fontSize, color = '#000', update = true) {
+      if (!Number.isFinite(fontSize) || fontSize < 0) {
+        throw new Error('fontSize must be positive number.');
+      }
+
       const ctx = this._ctx;
-      ctx.font = `${size}px "${this.fontFamily}"`;
+      ctx.font = `${fontSize}px "${this.fontFamily}"`;
       ctx.textBaseline = 'bottom';
 
       const width = ctx.measureText(string).width;
 
-      this.fillRect(this.cursor_x, this.cursor_y, width, size, '#fff', update);
+      this.fillRect(this.cursor_x, this.cursor_y, width, fontSize, '#fff', update);
 
       ctx.fillStyle = color;
-      ctx.fillText(string, this.cursor_x, this.cursor_y + size);
+      ctx.fillText(string, this.cursor_x, this.cursor_y + fontSize);
 
       if (update) this.update();
     }
