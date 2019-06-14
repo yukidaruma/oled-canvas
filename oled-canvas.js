@@ -22,7 +22,6 @@ module.exports = (Oled) => {
 
       const canvas = createCanvas(this.WIDTH, this.HEIGHT);
       this._ctx = canvas.getContext('2d');
-      this.clearCanvas();
     }
 
     _canvasPixelToOledPixel(pixel) {
