@@ -39,15 +39,11 @@ module.exports = (Oled) => {
     }
 
     clearCanvas() {
-      this.fillRect(0, 0, this.WIDTH, this.HEIGHT, { color: WHITE, update: false });
+      this.fillRect(0, 0, this.WIDTH, this.HEIGHT, { color: WHITE });
+      return this;
     }
 
-    clearDisplay({ update = true } = {}) {
-      this.clearCanvas();
-      if (update) this.update();
-    }
-
-    drawLine(x0, y0, x1, y1, { color = BLACK, update = true } = {}) {
+    drawLine(x0, y0, x1, y1, { color = BLACK } = {}) {
       const ctx = this._ctx;
       ctx.strokeStyle = color;
       ctx.beginPath();
@@ -55,33 +51,33 @@ module.exports = (Oled) => {
       ctx.lineTo(x1, y1);
       ctx.stroke();
 
-      if (update) this.update();
+      return this;
     }
 
-    drawPixels(pixels, { update = true } = {}) {
+    drawPixels(pixels) {
       if (!Array.isArray(pixels[0])) pixels = [pixels];
 
       pixels.forEach((elem) => {
         const [x, y, pixel] = elem;
-        this.fillRect(x, y, 1, 1, { color: pixel ? BLACK : WHITE, update: false });
+        this.fillRect(x, y, 1, 1, { color: pixel ? BLACK : WHITE });
       });
 
-      if (update) this.update();
+      return this;
     }
 
-    fillRect(x, y, w, h, { color = BLACK, update = true } = {}) {
+    fillRect(x, y, w, h, { color = BLACK } = {}) {
       const ctx = this._ctx;
       ctx.fillStyle = color;
       ctx.fillRect(x, y, w, h);
 
-      if (update) this.update();
+      return this;
     }
 
     getContext() {
       return this._ctx;
     }
 
-    drawString(string, { fontSize, color = BLACK, update = true } = {}) {
+    drawString(string, { fontSize, color = BLACK } = {}) {
       if (!Number.isFinite(fontSize) || fontSize < 0) {
         throw new Error('fontSize must be positive number.');
       }
@@ -92,12 +88,12 @@ module.exports = (Oled) => {
 
       const width = ctx.measureText(string).width;
 
-      this.fillRect(this.cursor_x, this.cursor_y, width, { fontSize, color: WHITE, update });
+      this.fillRect(this.cursor_x, this.cursor_y, width, { fontSize, color: WHITE });
 
       ctx.fillStyle = color;
       ctx.fillText(string, this.cursor_x, this.cursor_y + fontSize);
 
-      if (update) this.update();
+      return this;
     }
 
     update() {
