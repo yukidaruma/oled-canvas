@@ -65,6 +65,7 @@ ctx.getImageData(0, 0, oled.WIDTH, oled.HEIGHT);
 - Non-monospace and CJK font support
 - Powerful built-in functions
 - Future color support
+- Prototyping/development without actually using OLED display.
 
 # License
 MIT
