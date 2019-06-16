@@ -118,7 +118,7 @@ module.exports = (Oled) => {
         // send canvas data
         const bitsToByte = (bits) => {
           return bits.reverse()
-            .map((i, index) => i ? 2 ** index : 0, 0)
+            .map((i, index) => i ? 2 ** index : 0)
             .reduce((a, b) => a + b, 0);
         };
 
