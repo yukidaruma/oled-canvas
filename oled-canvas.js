@@ -136,7 +136,6 @@ module.exports = (Oled) => {
               pagePixels[640 + i],
               pagePixels[768 + i],
               pagePixels[896 + i],
-              pagePixels[1024 + i],
             ]));
           }
         }
