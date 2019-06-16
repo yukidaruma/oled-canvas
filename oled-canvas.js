@@ -116,27 +116,21 @@ module.exports = (Oled) => {
         });
 
         // send canvas data
-        const bitsToByte = (bits) => {
-          return bits
-            .map((i, index) => i ? 2 ** index : 0)
-            .reduce((a, b) => a + b, 0);
-        };
-
         for (let page = 0; page < pageLen; page++) {
           const pagePixels = new Uint32Array(ctx.getImageData(0, page * pageHeight, this.WIDTH, pageHeight).data.buffer) // Uint8Array to Uint32Array
             .map(this._canvasPixelToOledPixel);
 
           for (let i = 0; i < this.WIDTH; i++) {
-            this._transfer('data', bitsToByte([
-              pagePixels[0 + i],
-              pagePixels[128 + i],
-              pagePixels[256 + i],
-              pagePixels[384 + i],
-              pagePixels[512 + i],
-              pagePixels[640 + i],
-              pagePixels[768 + i],
-              pagePixels[896 + i],
-            ]));
+            this._transfer('data',
+              pagePixels[0 + i] +
+              pagePixels[128 + i] * 2 +
+              pagePixels[256 + i] * 4 +
+              pagePixels[384 + i] * 8 +
+              pagePixels[512 + i] * 16 +
+              pagePixels[640 + i] * 32 +
+              pagePixels[768 + i] * 64 +
+              pagePixels[896 + i] * 128
+            );
           }
         }
       }.bind(this));
