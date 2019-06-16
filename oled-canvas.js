@@ -117,7 +117,7 @@ module.exports = (Oled) => {
 
         // send canvas data
         const bitsToByte = (bits) => {
-          return bits.reverse()
+          return bits
             .map((i, index) => i ? 2 ** index : 0)
             .reduce((a, b) => a + b, 0);
         };
@@ -128,15 +128,15 @@ module.exports = (Oled) => {
 
           for (let i = 0; i < this.WIDTH; i++) {
             this._transfer('data', bitsToByte([
-              pagePixels[1024 + i],
-              pagePixels[896 + i],
-              pagePixels[768 + i],
-              pagePixels[640 + i],
-              pagePixels[512 + i],
-              pagePixels[384 + i],
-              pagePixels[256 + i],
-              pagePixels[128 + i],
               pagePixels[0 + i],
+              pagePixels[128 + i],
+              pagePixels[256 + i],
+              pagePixels[384 + i],
+              pagePixels[512 + i],
+              pagePixels[640 + i],
+              pagePixels[768 + i],
+              pagePixels[896 + i],
+              pagePixels[1024 + i],
             ]));
           }
         }
