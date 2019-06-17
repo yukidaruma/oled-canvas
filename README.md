@@ -60,7 +60,8 @@ oled
   .update(); // OLED display will not be updated until .update() is called
 
 const fontSize = 12;
-oled.drawString('こんにちは、世界', { fontSize }).update();
+// partialUpdate is a lot faster when there's only a few pixels updated.
+oled.drawString('こんにちは、世界', { fontSize }).partialUpdate();
 
 // You can access canvas context if necessary.
 const ctx = oled.getContext();
