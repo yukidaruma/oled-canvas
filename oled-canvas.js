@@ -22,6 +22,7 @@ module.exports = (Oled) => {
 
       const canvas = createCanvas(this.WIDTH, this.HEIGHT);
       this._ctx = canvas.getContext('2d');
+      this._pageHeight = 8;
     }
 
     _canvasPixelToOledPixel(pixel) {
@@ -95,42 +96,48 @@ module.exports = (Oled) => {
       return this;
     }
 
+    // set the start and endbyte locations for oled display update
+    _sendDisplaySeq(startPage, endPage, startX, endX) {
+      const displaySeq = [
+        // column start and end address
+        this.COLUMN_ADDR,
+        this.screenConfig.coloffset + startX,
+        this.screenConfig.coloffset + endX,
+        // page start and end address
+        this.PAGE_ADDR,
+        startPage,
+        endPage,
+      ];
+
+      displaySeq.forEach(byte => {
+        this._transfer('cmd', byte);
+      });
+    }
+
     update() {
       // wait for oled to be ready
       this._waitUntilReady(function() {
         const ctx = this._ctx;
-        const pageHeight = 8;
-        const pageLen = this.HEIGHT / pageHeight;
+        const pageLen = this.HEIGHT / this._pageHeight;
 
-        // set the start and endbyte locations for oled display update
-        const displaySeq = [
-          this.COLUMN_ADDR,
-          this.screenConfig.coloffset,
-          this.screenConfig.coloffset + this.WIDTH - 1, // column start and end address
-          this.PAGE_ADDR, 0, pageLen - 1 // page start and end address
-        ];
-
-        // send intro seq
-        displaySeq.forEach((elem) => {
-          this._transfer('cmd', elem);
-        });
+        this._sendDisplaySeq(0, pageLen - 1, 0, this.WIDTH - 1);
 
         // send canvas data
         for (let page = 0; page < pageLen; page++) {
-          const pagePixels = new Uint32Array(ctx.getImageData(0, page * pageHeight, this.WIDTH, pageHeight).data.buffer) // Uint8Array to Uint32Array
+          const pagePixels = new Uint32Array(ctx.getImageData(0, page * this._pageHeight, this.WIDTH, this._pageHeight).data.buffer) // Uint8Array to Uint32Array
             .map(this._canvasPixelToOledPixel);
 
-          for (let i = 0; i < this.WIDTH; i++) {
-            this._transfer('data',
-              pagePixels[0 + i] +
-              pagePixels[128 + i] * 2 +
-              pagePixels[256 + i] * 4 +
-              pagePixels[384 + i] * 8 +
-              pagePixels[512 + i] * 16 +
-              pagePixels[640 + i] * 32 +
-              pagePixels[768 + i] * 64 +
-              pagePixels[896 + i] * 128
-            );
+          for (let x = 0; x < this.WIDTH; x++) {
+            const pageByte = pagePixels[x] +
+              pagePixels[x + this.WIDTH] * 2 +
+              pagePixels[x + this.WIDTH * 2] * 2 ** 2 +
+              pagePixels[x + this.WIDTH * 3] * 2 ** 3 +
+              pagePixels[x + this.WIDTH * 4] * 2 ** 4 +
+              pagePixels[x + this.WIDTH * 5] * 2 ** 5 +
+              pagePixels[x + this.WIDTH * 6] * 2 ** 6 +
+              pagePixels[x + this.WIDTH * 7] * 2 ** 7;
+
+            this._transfer('data', pageByte);
           }
         }
       }.bind(this));
