@@ -23,6 +23,7 @@ module.exports = (Oled) => {
       const canvas = createCanvas(this.WIDTH, this.HEIGHT);
       this._ctx = canvas.getContext('2d');
       this._pageHeight = 8;
+      this._pageBytesCache = new Uint8Array(this.WIDTH * this.HEIGHT / this._pageHeight);
     }
 
     _canvasPixelToOledPixel(pixel) {
@@ -96,6 +97,10 @@ module.exports = (Oled) => {
       return this;
     }
 
+    _pageIndex(page, x) {
+      return page * this.WIDTH + x;
+    }
+
     // set the start and endbyte locations for oled display update
     _sendDisplaySeq(startPage, endPage, startX, endX) {
       const displaySeq = [
@@ -114,6 +119,7 @@ module.exports = (Oled) => {
       });
     }
 
+    // Full update -- faster when most pixels are updated
     update() {
       // wait for oled to be ready
       this._waitUntilReady(function() {
@@ -128,6 +134,7 @@ module.exports = (Oled) => {
             .map(this._canvasPixelToOledPixel);
 
           for (let x = 0; x < this.WIDTH; x++) {
+            const pageIndex = this._pageIndex(page, x);
             const pageByte = pagePixels[x] +
               pagePixels[x + this.WIDTH] * 2 +
               pagePixels[x + this.WIDTH * 2] * 2 ** 2 +
@@ -137,6 +144,41 @@ module.exports = (Oled) => {
               pagePixels[x + this.WIDTH * 6] * 2 ** 6 +
               pagePixels[x + this.WIDTH * 7] * 2 ** 7;
 
+            this._pageBytesCache[pageIndex] = pageByte;
+            this._transfer('data', pageByte);
+          }
+        }
+      }.bind(this));
+    }
+
+    partialUpdate() {
+      // wait for oled to be ready
+      this._waitUntilReady(function() {
+        const ctx = this._ctx;
+        const pageLen = this.HEIGHT / this._pageHeight;
+
+        // send canvas data
+        for (let page = 0; page < pageLen; page++) {
+          const pagePixels = new Uint32Array(ctx.getImageData(0, page * this._pageHeight, this.WIDTH, this._pageHeight).data.buffer) // Uint8Array to Uint32Array
+            .map(this._canvasPixelToOledPixel);
+
+          for (let x = 0; x < this.WIDTH; x++) {
+            const pageIndex = this._pageIndex(page, x);
+            const pageByte = pagePixels[x] +
+              pagePixels[x + this.WIDTH] * 2 +
+              pagePixels[x + this.WIDTH * 2] * 2 ** 2 +
+              pagePixels[x + this.WIDTH * 3] * 2 ** 3 +
+              pagePixels[x + this.WIDTH * 4] * 2 ** 4 +
+              pagePixels[x + this.WIDTH * 5] * 2 ** 5 +
+              pagePixels[x + this.WIDTH * 6] * 2 ** 6 +
+              pagePixels[x + this.WIDTH * 7] * 2 ** 7;
+
+            if (this._pageBytesCache[pageIndex] === pageByte) {
+              continue;
+            }
+
+            this._sendDisplaySeq(page, page, x, x);
+            this._pageBytesCache[pageIndex] = pageByte;
             this._transfer('data', pageByte);
           }
         }
