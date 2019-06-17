@@ -4,19 +4,19 @@
 - Non-monospace and CJK font support
 - Powerful built-in functions
 - Future color support
-- Prototyping/development without actually using OLED display.
+- Prototyping/development without actually using OLED display
 
 # Installation
-1. [Install node-canvas' dependencies](https://github.com/Automattic/node-canvas#installation)
-2. Install dependencies then npm install
+Install dependencies, then install oled-canvas from GitHub
 
-   ```
-   # dependencies
-   npm install oled # for Arduino
-   npm install oled-i2c-bus # for Raspberry Pi
+```
+# dependencies
+npm install node-canvas
+npm install oled # for Arduino
+npm install oled-i2c-bus # for Raspberry Pi
 
-   npm install https://github.com/yukidaruma/oled-canvas
-   ```
+npm install https://github.com/yukidaruma/oled-canvas
+```
 
 # Example
 ## Initialization
